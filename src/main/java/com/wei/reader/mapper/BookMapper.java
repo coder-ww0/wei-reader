@@ -1,0 +1,13 @@
+package com.wei.reader.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wei.reader.entity.Book;
+
+/**
+ * @author wei
+ * @date 2021/10/23 15:50
+ * @description: TODO
+ */
+public interface BookMapper extends BaseMapper<Book> {
+
+}
