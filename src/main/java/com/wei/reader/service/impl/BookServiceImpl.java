@@ -49,5 +49,23 @@ public class BookServiceImpl implements BookService {
         return pageObject;
     }
 
+    /**
+     * 根据图书编号查询图书对象
+     * @param bookId 图书id
+     * @return
+     */
+    @Override
+    public Book selectById(Long bookId) {
+        Book book = bookMapper.selectById(bookId);
+        return book;
+    }
 
+    /**
+     * 更新图书评分/评价数量
+     */
+    @Transactional
+    @Override
+    public void updateEvaluation() {
+        bookMapper.updateEvaluation();
+    }
 }

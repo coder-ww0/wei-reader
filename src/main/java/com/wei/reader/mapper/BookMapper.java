@@ -9,5 +9,8 @@ import com.wei.reader.entity.Book;
  * @description: TODO
  */
 public interface BookMapper extends BaseMapper<Book> {
-
+    /**
+     *更新图书评分、评价数量
+     */
+    public void updateEvaluation();
 }
