@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wei.reader.entity.Book;
+import com.wei.reader.entity.Evaluation;
+import com.wei.reader.entity.MemberReadState;
 import com.wei.reader.mapper.BookMapper;
+import com.wei.reader.mapper.EvaluationMapper;
+import com.wei.reader.mapper.MemberReadStateMapper;
 import com.wei.reader.service.BookService;
 import javafx.scene.control.Pagination;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,11 @@ import javax.annotation.Resource;
 public class BookServiceImpl implements BookService {
     @Resource
     private BookMapper bookMapper;
+    @Resource
+    private MemberReadStateMapper memberReadStateMapper;
+    @Resource
+    private EvaluationMapper evaluationMapper;
+
     /**
      * 分页查询图书
      * @param categoryId  分类id
@@ -67,5 +76,48 @@ public class BookServiceImpl implements BookService {
     @Override
     public void updateEvaluation() {
         bookMapper.updateEvaluation();
+    }
+
+    /**
+     * 创建新的图书
+     *
+     * @param book
+     * @return
+     */
+    @Transactional
+    @Override
+    public Book createBook(Book book) {
+        bookMapper.insert(book);
+        return book;
+    }
+
+    /**
+     * 更新图书
+     *
+     * @param book
+     * @return
+     */
+    @Transactional
+    @Override
+    public Book updateBook(Book book) {
+        bookMapper.updateById(book);
+        return book;
+    }
+
+    /**
+     * 删除图书及其相关数据
+     *
+     * @param bookId 图书编号
+     */
+    @Transactional
+    @Override
+    public void deleteBook(Long bookId) {
+        bookMapper.deleteById(bookId);
+        QueryWrapper<MemberReadState> mrsQueryWrapper = new QueryWrapper<MemberReadState>();
+        mrsQueryWrapper.eq("book_id", bookId);
+        memberReadStateMapper.delete(mrsQueryWrapper);
+        QueryWrapper<Evaluation> evaluationQueryWrapper = new QueryWrapper<Evaluation>();
+        evaluationQueryWrapper.eq("book_id", bookId);
+        evaluationMapper.delete(evaluationQueryWrapper);
     }
 }
